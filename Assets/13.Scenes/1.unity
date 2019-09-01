@@ -760,7 +760,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -822,6 +822,7 @@ GameObject:
   - component: {fileID: 5184753801634769096}
   - component: {fileID: 8834954195255915348}
   - component: {fileID: 1356389791843228094}
+  - component: {fileID: 5184753801633427755}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -851,10 +852,11 @@ MonoBehaviour:
     smoothTime: 5
     lockCursor: 1
   m_StickToGroundForce: 9.8
-  m_GravityMultiplier: 0.92
+  m_GravityMultiplier: 3
   m_JumpSpeed: 10
   m_WalkSpeed: 5
   m_RunSpeed: 10
+  m_RunCamFieldView: 30
 --- !u!1 &5184753801633427754
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,6 +876,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &5184753801633427755
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5184753801633427752}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 2, z: 0.8}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &5184753801634769096
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1014,10 +1029,10 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.8
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_Radius: 0.42
+  m_SlopeLimit: 0
+  m_StepOffset: 0
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &8834954195255915348

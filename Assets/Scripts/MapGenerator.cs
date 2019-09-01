@@ -26,9 +26,9 @@ public class MapGenerator : MonoBehaviour
     public GameObject b_SnowPrefab;
 
     [Header("생성할 맵과 관련한 정보")]
-    public static int width_x = 125;
-    public static int width_z = 125;
-    public static int height = 125;
+    public static int width_x = 50;
+    public static int width_z = 50;
+    public static int height = 50;
 
     [Header("x,z축 완만함값 (파장에서의 주기)")]
     public int waveLength; //완만함값 (파장에서의 주기)
@@ -110,7 +110,7 @@ public class MapGenerator : MonoBehaviour
         //구름만들기
         yield return StartCoroutine(CreateCloud(120, 50, 80));
         //동굴만들기
-        yield return StartCoroutine(CreateMines(5, 100));
+        yield return StartCoroutine(CreateMines(5, 400));
         Debug.Log("동굴만들기");
     }
 
@@ -131,7 +131,7 @@ public class MapGenerator : MonoBehaviour
         yield return null;
     }
     IEnumerator CreateMines(int Num, int UnitMineSize) {
-        int HoleSize = 0;//구멍의 크기
+        int HoleSize = 2;//구멍의 크기
 
         //광산의 갯수
         for (int i = 0; i < Num; i++) {
@@ -178,13 +178,13 @@ public class MapGenerator : MonoBehaviour
                 {
                     zPos += Random.Range(-1, 2);
                     if (zPos < HoleSize || zPos >= width_z - HoleSize) continue;
-                    break;
+                    else break;
                 }
                 while (true)
                 {
                     yPos += Random.Range(-1, 2);
                     if (yPos < HoleSize || yPos >= height - HoleSize) continue;
-                    break;
+                    else break;
                 }
             }
             for (int z = 1; z < width_z - 1; z++)
