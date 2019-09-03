@@ -684,18 +684,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405f41d4f231d77418cd22834c18c5d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  b_DirtPrefab: {fileID: 2731173128291423580, guid: 180e0ef6ff8f54a448f252b625c442c2,
-    type: 3}
-  b_GrassPrefab: {fileID: 7841930904666051390, guid: aa7159ac0a7dc954e891808386016030,
-    type: 3}
-  b_SandPrefab: {fileID: 7590255685817651758, guid: 37f049866b1af22448e5e82bcc7e51d0,
-    type: 3}
-  b_GoldPrefab: {fileID: 3438989560197260401, guid: 935f2e4227bbadf499b14efc142674ba,
-    type: 3}
-  b_DiaPrefab: {fileID: 7728272784977128648, guid: c6588c8e63d0ca8469ce06dd97575d6b,
-    type: 3}
-  b_SnowPrefab: {fileID: 6837686748922190088, guid: 26f3dc12f39397f4c88ed1770362f61f,
-    type: 3}
+  typeViewer: 0
+  blockPrefabs:
+  - {fileID: 6837686748922190088, guid: 26f3dc12f39397f4c88ed1770362f61f, type: 3}
+  - {fileID: 7841930904666051390, guid: aa7159ac0a7dc954e891808386016030, type: 3}
+  - {fileID: 2731173128291423580, guid: 180e0ef6ff8f54a448f252b625c442c2, type: 3}
+  - {fileID: 3438989560197260401, guid: 935f2e4227bbadf499b14efc142674ba, type: 3}
+  - {fileID: 7728272784977128648, guid: c6588c8e63d0ca8469ce06dd97575d6b, type: 3}
   waveLength: 30
   amplitude: 30
   groundHeightOffset: 0
