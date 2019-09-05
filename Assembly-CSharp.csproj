@@ -60,10 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CameraFollow.cs" />
-    <Compile Include="Assets\Scripts\MapGenerator.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\14.Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\14.Scripts\GameManager.cs" />
+    <Compile Include="Assets\14.Scripts\MapGenerator.cs" />
+    <Compile Include="Assets\14.Scripts\PlayerController.cs" />
+    <Compile Include="Assets\14.Scripts\PlayerMove.cs" />
+    <Compile Include="Assets\14.Scripts\UIManager.cs" />
     <None Include="Assets\00.ProjectTips\00.Need_to_Help.xml" />
     <None Include="Assets\00.ProjectTips\01.Need_to_Learn.xml" />
     <Reference Include="Unity.TextMeshPro.Editor">
