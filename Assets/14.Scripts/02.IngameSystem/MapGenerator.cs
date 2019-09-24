@@ -109,28 +109,7 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-        if (Input.mouseScrollDelta.y > 0)
-            UIManager.Instance.ItemBar_SelectRightSlot();
-        else if (Input.mouseScrollDelta.y < 0)
-            UIManager.Instance.ItemBar_SelectLeftSlot();
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            UIManager.Instance.ItemBar_SelectNumSlot(1);
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            UIManager.Instance.ItemBar_SelectNumSlot(2);
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            UIManager.Instance.ItemBar_SelectNumSlot(3);
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            UIManager.Instance.ItemBar_SelectNumSlot(4);
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-            UIManager.Instance.ItemBar_SelectNumSlot(5);
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-            UIManager.Instance.ItemBar_SelectNumSlot(6);
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-            UIManager.Instance.ItemBar_SelectNumSlot(7);
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-            UIManager.Instance.ItemBar_SelectNumSlot(8);
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-            UIManager.Instance.ItemBar_SelectNumSlot(9);
+        
     }
 
     void DrawBlock(Vector3 blockPos) {
