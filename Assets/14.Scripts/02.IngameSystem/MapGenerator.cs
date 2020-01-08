@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Block
 {
+    public enum Type { Snow, Grass, Dirt, Gold, Diamond, Sand}
     public Type type;
     public bool visible;
     public GameObject obj;
-
-    public enum Type { Snow, Grass, Dirt, Gold, Diamond}
     public Block(Type t, bool v, GameObject blockObj)
     {
         type = t;
@@ -31,7 +30,7 @@ public class Block
         }
 
         // 0~7층에는 자원이 랜덤으로 스폰되게 한다
-        if (y > 0 && y < 7 && Random.Range(0, 100) < 3)
+        if (y > 0 && y < 7 && Random.Range(0, 100) < 50)
         {
             return Block.Type.Gold;
         }
@@ -49,17 +48,11 @@ public class MapGenerator : MonoBehaviour
     public Block.Type typeViewer;
     [Header("블록의 타입 번호에 따라 배열에 프리팹을 부여")]
     public GameObject[] blockPrefabs;
-    //public GameObject b_DirtPrefab;
-    //public GameObject b_GrassPrefab;
-    //public GameObject b_SandPrefab;
-    //public GameObject b_GoldPrefab;
-    //public GameObject b_DiaPrefab;
-    //public GameObject b_SnowPrefab;
 
     [Header("생성할 맵과 관련한 정보")]
-    public static int width_x = 50;
-    public static int width_z = 50;
-    public static int height = 50;
+    public static int width_x = 25;
+    public static int width_z = 25;
+    public static int height = 150;
 
     [Header("x,z축 완만함값 (파장에서의 주기)")]
     public int waveLength; //완만함값 (파장에서의 주기)
@@ -75,44 +68,11 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(InitGame());
     }
 
-    void Update() {
-        if (Input.GetMouseButtonDown(1)) {
-            RaycastHit hit;
-
-            //화면의 정가운데 위치에서 ray변수를 만든다.
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-
-            Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 100f, Color.red);
-
-            if (Physics.Raycast(ray, out hit,6f)) {
-                Vector3 blockPos = hit.transform.position;
-
-                //맨 아래 블록은 소멸되지 않게 한다.
-                if (blockPos.y <= 0) return;
-
-                worldBlocks[(int)blockPos.x, (int)blockPos.y, (int)blockPos.z] = null;
-                Destroy(hit.collider.gameObject);
-
-                //자기 자신을 뺀 이웃들을 인스턴스화한다
-                for (int x = -1; x <= 1; x++) {
-                    for (int y = -1; y <= 1; y++) {
-                        for (int z = -1; z <= 1; z++) {
-
-                            if (blockPos.x + x < 0 || blockPos.x + x >= width_x) continue;
-                            if (blockPos.y + y < 0 || blockPos.y + y >= height) continue;
-                            if (blockPos.z + z < 0 || blockPos.z + z >= width_z) continue;
-
-                            Vector3 neighbour = new Vector3(blockPos.x + x, blockPos.y + y, blockPos.z + z);
-                            DrawBlock(neighbour);
-                        }
-                    }
-                }
-            }
-        }
-        
-    }
-
-    void DrawBlock(Vector3 blockPos) {
+    /// <summary>
+    /// 매개변수로 받은 포지션의 데이터를 가진 블록을 활성화한다.
+    /// </summary>
+    /// <param name="blockPos"></param>
+    public void RenderBlock(Vector3 blockPos) {
         Block tempBlock = worldBlocks[(int)blockPos.x, (int)blockPos.y, (int)blockPos.z];
         if (tempBlock == null) return;
 
@@ -130,7 +90,7 @@ public class MapGenerator : MonoBehaviour
         yield return StartCoroutine(MapInit());
 
         //구름만들기
-        yield return StartCoroutine(CreateCloud(120, 50, 80));
+        yield return StartCoroutine(CreateCloud(10, 50, 80));
         //동굴만들기
         yield return StartCoroutine(CreateMines(2, 200));
         Debug.Log("동굴만들기");
@@ -139,8 +99,8 @@ public class MapGenerator : MonoBehaviour
     IEnumerator CreateCloud(int Num, int unitCloudSize, int Cloudheight) {
         for (int i = 0; i < Num; i++) {
             //월드 맵 넓이로 랜덤하게..
-            int xPos = Random.Range(0, width_x + 200);
-            int zPos = Random.Range(0, width_z + 200);
+            int xPos = Random.Range(0, width_x);
+            int zPos = Random.Range(0, width_z);
 
             //각 구름의 사이즈
             for (int j = 0; j < unitCloudSize; j++) {
@@ -227,7 +187,7 @@ public class MapGenerator : MonoBehaviour
                                         {
                                             Vector3 neighbour = new Vector3(x + x1, y + y1, z + z1);
                                             
-                                            DrawBlock(neighbour);
+                                            RenderBlock(neighbour);
                                         }
                                     }
                                 }
@@ -253,30 +213,37 @@ public class MapGenerator : MonoBehaviour
                 float xCoord = (pos.x + seed) / waveLength;
                 float zCoord = (pos.z + seed) / waveLength;
                 pos.y = (int)(Mathf.PerlinNoise(xCoord, zCoord) * amplitude + groundHeightOffset);
-                
-                CreateBlock(pos, true);
+
+                Block.Type blockType = Block.PosYWithBlockType((int)pos.y);
+                CreateBlock(pos, true, blockType);
                 while (pos.y > 0)
                 {
                     //지면 아래의 보이지 않는 블럭들을 배열에 넣는다.
                     //실제로 객체는 만들어지지 않는다.
                     pos.y--;
-                    CreateBlock(pos, false);
+                    blockType = Block.PosYWithBlockType((int)pos.y);
+                    CreateBlock(pos, false, blockType);
                 }
             }
         }
         yield return null;
     }
 
-    void CreateBlock(Vector3 blockpos, bool visual) {
-        Block.Type blockType = Block.PosYWithBlockType((int)blockpos.y);
-        if (visual)
+    public void CreateBlock(Vector3 blockpos, bool visual, Block.Type type) {
+        if (worldBlocks[(int)blockpos.x, (int)blockpos.y, (int)blockpos.z] != null)
         {
-            GameObject blockObj = (GameObject)Instantiate(blockPrefabs[(int)blockType], blockpos, Quaternion.identity);
-            worldBlocks[(int)blockpos.x, (int)blockpos.y, (int)blockpos.z] = new Block(blockType, visual, blockObj);
+            //Debug.Log("이미 블록이 설치된 좌표입니다!!!");
+            return;
+        }
+            //Block.Type blockType = Block.PosYWithBlockType((int)blockpos.y);
+            if (visual)
+        {
+            GameObject blockObj = (GameObject)Instantiate(blockPrefabs[(int)type], blockpos, Quaternion.identity);
+            worldBlocks[(int)blockpos.x, (int)blockpos.y, (int)blockpos.z] = new Block(type, visual, blockObj);
         }
         else
         {
-            worldBlocks[(int)blockpos.x, (int)blockpos.y, (int)blockpos.z] = new Block(blockType, visual, null);
+            worldBlocks[(int)blockpos.x, (int)blockpos.y, (int)blockpos.z] = new Block(type, visual, null);
         }
     }
 }
